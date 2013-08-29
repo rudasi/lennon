@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Next Big Thing</string>
+    <string name="picture_capture">Capture Picture</string> 
+    <string name="action_settings">Settings</string>
+    <string name="btnStart">Start</string>
+    <string name="btnIntend">Take Picture</string>
+    <string name="album_name">Next Big Thing</string>
+	<string name="cannot">Cannot</string>
+	
+</resources>

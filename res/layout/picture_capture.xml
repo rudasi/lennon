@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="match_parent" 
+    android:layout_width="match_parent"
+    >
+	<LinearLayout 
+	 	android:orientation="horizontal"
+	 	android:layout_height="wrap_content"
+	 	android:layout_width="match_parent"
+	>
+    	<Button android:text="@string/btnIntend" android:id="@+id/btnIntend"
+    	    android:layout_height="wrap_content"
+    	    android:layout_width="0dp"
+    	    android:layout_weight="1" 
+    	/>
+    </LinearLayout>
+    	
+    <ImageView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" 
+        android:visibility="visible"
+        android:id="@+id/imageView" />
+
+</LinearLayout>
