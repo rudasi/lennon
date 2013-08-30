@@ -9,11 +9,11 @@
         android:targetSdkVersion="18" />
 
     <uses-feature android:name="android.hardware.camera" />
-        
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -28,16 +28,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="com.example.nextbigthing.PictureCapture"
-            android:label="@string/picture_capture" 
+            android:label="@string/picture_capture"
             android:parentActivityName="com.example.nextbigthing.MainActivity" >
+            <intent-filter>
+                <action android:name="PICTURE_CAPTURE" />
+            </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nextbigthing.MainActivity" />
         </activity>
-        
     </application>
 
 </manifest>

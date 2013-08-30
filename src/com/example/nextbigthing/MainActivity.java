@@ -38,13 +38,15 @@ public class MainActivity extends Activity
 			Button.OnClickListener onClickListener,
 			String intentName
 	) {
+		/*
 		if (isIntentAvailable(this, intentName)) {
 			btn.setOnClickListener(onClickListener);
 		} else {
 			btn.setText(
 				getText(R.string.cannot).toString() + " " + btn.getText());
 			btn.setClickable(false);
-		}
+		}*/
+		btn.setOnClickListener(onClickListener);
 	}
 	
 	Button.OnClickListener mStartApp = 
