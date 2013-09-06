@@ -36,8 +36,9 @@ import com.parse.SaveCallback;
 
 public class PictureCapture extends Activity {
 
-    private static final int ACTION_TAKE_PHOTO_B = 1;
-	
+    private static final int ACTION_TAKE_PHOTO_B_THIS = 1;
+    private static final int ACTION_TAKE_PHOTO_B_THAT = 2;
+    private static final int ACTION_POST_PICTURES = 3;
 	private static final String BITMAP_STORAGE_KEY = "viewbitmap";
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
 	private static final String JPEG_FILE_PREFIX = "IMG_";
@@ -46,9 +47,11 @@ public class PictureCapture extends Activity {
 	private String mCurrentPhotoPath; 
 	
 	private ImageView mImageView1;
-	//private ImageView mImageView2;
+	private ImageView mImageView2;
 	private Bitmap mImageBitmap1;
-	//private Bitmap mImageBitmap2;
+	private Bitmap mImageBitmap2;
+	private byte[] data_this;
+	private byte[] data_that;
 	
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
 	
@@ -59,14 +62,20 @@ public class PictureCapture extends Activity {
 	    return stream.toByteArray();
 	}
 	
-	public void sendPicToParse(byte[] data){
-		ParseFile file = new ParseFile("westpunjab.bmp", data);		
-		file.saveInBackground();
+	public void sendPicToParse(){
+		ParseFile file_this = new ParseFile("westpunjab1.bmp", data_this);		
+		ParseFile file_that = new ParseFile("westpunjab2.bmp", data_that);
+		file_this.saveInBackground();
+		file_that.saveInBackground();
 		
-		ParseObject test = new ParseObject("what2");
-		test.put("pic", file);
+		ParseObject post_data = new ParseObject("IMG");
+		post_data.put("Title", "doubling");
+		post_data.put("img1", file_this);
+		post_data.put("img2", file_that);
+		post_data.put("imgName1", "Check yourself");
+		post_data.put("imgName2", "Before you reck yourself");
 		
-		test.saveInBackground(new SaveCallback() {
+		post_data.saveInBackground(new SaveCallback() {
 			public void done(ParseException e){
 				if (e == null){
 					Log.d("PictureCapture", "Saved picture successfully");
@@ -121,62 +130,67 @@ public class PictureCapture extends Activity {
         return f;
 	}
 	
-	private void setPic(){
+	private void setPic(int picture){
 	
-		int targetH = mImageView1.getHeight();
-		int targetW = mImageView1.getWidth();
-		
-		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-		bmOptions.inJustDecodeBounds = true;
-		BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-		int photoH = bmOptions.outHeight;
-		int photoW = bmOptions.outWidth;
-		
-		int scaleFactor = 1;
-		if ((targetW > 0) || (targetH > 0)) {	
-			scaleFactor = Math.min(photoH/targetH, photoW/targetW);
+		if (picture == 1)
+		{
+			int targetH = mImageView1.getHeight();
+			int targetW = mImageView1.getWidth();
+			
+			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+			bmOptions.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+			int photoH = bmOptions.outHeight;
+			int photoW = bmOptions.outWidth;
+			
+			int scaleFactor = 1;
+			if ((targetW > 0) || (targetH > 0)) {	
+				scaleFactor = Math.min(photoH/targetH, photoW/targetW);
+			}
+			
+			bmOptions.inJustDecodeBounds = false;
+			bmOptions.inSampleSize = scaleFactor;
+			bmOptions.inPurgeable = true;
+			
+			Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+							
+			mImageView1.setImageBitmap(bitmap);
+			mImageView1.setVisibility(View.VISIBLE);
+			data_this = getBytesFromBitmap(bitmap);
+			
+			//sendPicToParse(data);
 		}
-		
-		bmOptions.inJustDecodeBounds = false;
-		bmOptions.inSampleSize = scaleFactor;
-		bmOptions.inPurgeable = true;
-		
-		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-						
-		mImageView1.setImageBitmap(bitmap);
-		mImageView1.setVisibility(View.VISIBLE);
-		
-		byte[] data = getBytesFromBitmap(bitmap);
-		
-		sendPicToParse(data);
-		/*
-		ParseFile file = new ParseFile("westpunjab.bmp", data);		
-		file.saveInBackground();
-		
-		ParseObject test = new ParseObject("what");
-		test.put("pic", file);
-		test.saveInBackground();
-		*/
+		else if (picture == 2)
+		{
+			int targetH = mImageView2.getHeight();
+			int targetW = mImageView2.getWidth();
+			
+			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+			bmOptions.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+			int photoH = bmOptions.outHeight;
+			int photoW = bmOptions.outWidth;
+			
+			int scaleFactor = 1;
+			if ((targetW > 0) || (targetH > 0)) {	
+				scaleFactor = Math.min(photoH/targetH, photoW/targetW);
+			}
+			
+			bmOptions.inJustDecodeBounds = false;
+			bmOptions.inSampleSize = scaleFactor;
+			bmOptions.inPurgeable = true;
+			
+			Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+							
+			mImageView2.setImageBitmap(bitmap);
+			mImageView2.setVisibility(View.VISIBLE);
+			data_that = getBytesFromBitmap(bitmap);
+			
+			//sendPicToParse(data);
+		}
+	
 	}
 	
-	
-	Button.OnClickListener mTakePicOnClickListener = 
-		new Button.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			dispatchTakePictureIntent(ACTION_TAKE_PHOTO_B);
-		}
-	};
-	
-	/*
-	ImageView.OnClickListener mTakePicOnClickListener =
-		new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			dispatchTakePictureIntent(ACTION_TAKE_PHOTO_B);
-		}
-	};
-	*/
 	private void galleryAddPic() {
 		Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_FILE");
 		File f = new File(mCurrentPhotoPath);
@@ -189,7 +203,20 @@ public class PictureCapture extends Activity {
 	private void dispatchTakePictureIntent(int actionCode){
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		
-		if (actionCode == ACTION_TAKE_PHOTO_B){
+		if (actionCode == ACTION_TAKE_PHOTO_B_THIS){
+			File f = null;
+			
+			try {
+				f = setUpPhotoFile();
+				mCurrentPhotoPath = f.getAbsolutePath();
+				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+			} catch (IOException e){
+				e.printStackTrace();
+				f = null;
+				mCurrentPhotoPath = null;
+			}
+		}
+		else if (actionCode == ACTION_TAKE_PHOTO_B_THAT){
 			File f = null;
 			
 			try {
@@ -206,9 +233,17 @@ public class PictureCapture extends Activity {
 		startActivityForResult(takePictureIntent, actionCode);
 	}
 	
-	private void handleBigCameraPhoto(){
+	private void dispatchPostPicturesIntent(int actionCode){
+		if (actionCode == ACTION_POST_PICTURES){
+			sendPicToParse();
+		}
+		
+		//startActivityForResult(takePictureIntent, actionCode);
+	}
+	
+	private void handleBigCameraPhoto(int picture){
 		if (mCurrentPhotoPath != null){		
-			setPic();
+			setPic(picture);
 			galleryAddPic();
 			mCurrentPhotoPath =  null;
 		}
@@ -219,47 +254,49 @@ public class PictureCapture extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.picture_capture);
 		
-		/*
-		mImageView1 = (ImageView) findViewById(R.id.imageView);
-	    setViewListenerOrDisable(
-	    		mImageView1,
-	    		mTakePicOnClickListener,
-	    		MediaStore.ACTION_IMAGE_CAPTURE);
+		mImageView1 = (ImageView) findViewById(R.id.imageView1);
+		mImageView1.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				dispatchTakePictureIntent(ACTION_TAKE_PHOTO_B_THIS);
+			}
+		});
+		
+		mImageView2 = (ImageView) findViewById(R.id.imageView2);
+		mImageView2.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				dispatchTakePictureIntent(ACTION_TAKE_PHOTO_B_THAT);
+			}
+		});
 		
 		mImageBitmap1 = null;
-		*/
-		
-		mImageView1 = (ImageView) findViewById(R.id.imageView);
-		mImageBitmap1 = null;
+		mImageBitmap2 = null;
 		
 		Button picBtn = (Button) findViewById(R.id.btnIntend);
-		setBtnListenerOrDisable(
-				picBtn,
-				mTakePicOnClickListener,
-				MediaStore.ACTION_IMAGE_CAPTURE);
+		picBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				dispatchPostPicturesIntent(ACTION_POST_PICTURES);
+			}
+		});
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
 			mAlbumStorageDirFactory = new FroyoAlbumDirFactory();
 		} else {
 			mAlbumStorageDirFactory = new BaseAlbumDirFactory();
 		}
-		
-		//Parse stuff
-		//Parse.initialize(this, "vQm6jpJhvdC7DJavE1aOFcb7ytTBUV1wPden4jmy", "Oj1hVCxed731RsvGMExhbS5TjVWoAL2nR71FpqLZ");
-		//ParseAnalytics.trackAppOpened(getIntent());
-		
-		/*
-		ParseObject testObject = new ParseObject("TestObject");
-		testObject.put("foo", "fucking bar");
-		testObject.saveInBackground();
-		*/
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ACTION_TAKE_PHOTO_B) {
+		if (requestCode == ACTION_TAKE_PHOTO_B_THIS) {
 			if (resultCode == RESULT_OK) {
-				handleBigCameraPhoto();
+				int picture = 1;
+				handleBigCameraPhoto(picture);
+			}
+		}
+		else if (requestCode == ACTION_TAKE_PHOTO_B_THAT) {
+			if (resultCode == RESULT_OK) {
+				int picture = 2;
+				handleBigCameraPhoto(picture);
 			}
 		}
 	}
@@ -311,7 +348,7 @@ public class PictureCapture extends Activity {
 		}
 	}
 	*/
-	
+	/*
 	private void setBtnListenerOrDisable(
 			Button btn,
 			Button.OnClickListener onClickListener,
@@ -325,6 +362,6 @@ public class PictureCapture extends Activity {
 			btn.setClickable(false);
 		}
 	}
-	
+	*/
 }
 

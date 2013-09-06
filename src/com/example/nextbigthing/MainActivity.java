@@ -35,17 +35,8 @@ public class MainActivity extends Activity
 	
 	private void setBtnListenerOrDisable(
 			Button btn,
-			Button.OnClickListener onClickListener,
-			String intentName
+			Button.OnClickListener onClickListener
 	) {
-		/*
-		if (isIntentAvailable(this, intentName)) {
-			btn.setOnClickListener(onClickListener);
-		} else {
-			btn.setText(
-				getText(R.string.cannot).toString() + " " + btn.getText());
-			btn.setClickable(false);
-		}*/
 		btn.setOnClickListener(onClickListener);
 	}
 	
@@ -72,10 +63,11 @@ public class MainActivity extends Activity
 		setContentView(R.layout.activity_main);
 		
 		Button startBtn = (Button) findViewById(R.id.btnStart);
+		
 		setBtnListenerOrDisable(
 				startBtn,
-				mStartApp,
-				"PICTURE_CAPTURE");
+				mStartApp
+				);
 		
 		//Parse stuff
 		Parse.initialize(this, "vQm6jpJhvdC7DJavE1aOFcb7ytTBUV1wPden4jmy", "Oj1hVCxed731RsvGMExhbS5TjVWoAL2nR71FpqLZ");
