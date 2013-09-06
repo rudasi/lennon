@@ -1,29 +1,33 @@
 package com.example.nextbigthing;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.Menu;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class MainActivity extends Activity
 {
 	private static final int ACTION_START_APP = 1;
+	private EditText userName;
+	private EditText passWord;
+	private ParseUser currentUser;
+	private int userNameSet = 0;
+	private int passWordSet = 0;
 	
 	public static boolean isIntentAvailable(Context context, String action){
 		final PackageManager packageManager = context.getPackageManager();
@@ -49,10 +53,52 @@ public class MainActivity extends Activity
 		};
 		
 	private void dispatchStartAppIntent(int actionCode){
-		Intent startApp = new Intent(this, PictureCapture.class);
 		
 		if (actionCode == ACTION_START_APP){
-			startActivityForResult(startApp, actionCode);
+			//startActivityForResult(startApp, actionCode);
+			if ((userName.getText().toString().equals("User Name")) || (userName.getText().toString().equals(""))){
+				Log.d("Main Activity", "No User Name entered");
+				Toast.makeText(getApplicationContext(), "Please enter a User Name", Toast.LENGTH_LONG).show();
+				userNameSet = 0;
+				passWordSet = 0;
+			}
+			else{
+				userNameSet = 1;
+			}
+			
+			if ((passWord.getText().toString().equals("Password")) || (passWord.getText().toString().equals(""))){
+				Log.d("Main Activity", "No Password entered");
+				Toast.makeText(getApplicationContext(), "Please enter a Password", Toast.LENGTH_LONG).show();
+				userNameSet = 0;
+				passWordSet = 0;
+			}
+			else{
+				passWordSet = 1;
+			}
+			
+			if (userNameSet == 1 && passWordSet == 1){
+				ParseUser user = new ParseUser();
+				user.setUsername(userName.getText().toString());
+				user.setPassword(passWord.getText().toString());
+				user.signUpInBackground(new SignUpCallback() {
+					public void done(ParseException e) {
+						if (e == null){
+							Log.d("Main Activity", "New user created");
+							Toast.makeText(getApplicationContext(), "Successful Sign up", Toast.LENGTH_LONG).show();
+						}
+						else{
+							Log.d("Main Activity", "New user NOT created");
+							Toast.makeText(getApplicationContext(), "Unsuccessful Sign up, please try again", Toast.LENGTH_LONG).show();
+						}
+					}
+				});
+			}
+			
+			currentUser = ParseUser.getCurrentUser();
+			if (currentUser != null){
+				Intent startApp = new Intent(this, PictureCapture.class);
+				startActivityForResult(startApp, ACTION_START_APP);
+			}
 		}
 		
 	}
@@ -60,18 +106,28 @@ public class MainActivity extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		Button startBtn = (Button) findViewById(R.id.btnStart);
-		
-		setBtnListenerOrDisable(
-				startBtn,
-				mStartApp
-				);
 		
 		//Parse stuff
 		Parse.initialize(this, "vQm6jpJhvdC7DJavE1aOFcb7ytTBUV1wPden4jmy", "Oj1hVCxed731RsvGMExhbS5TjVWoAL2nR71FpqLZ");
 		ParseAnalytics.trackAppOpened(getIntent());
+		currentUser = ParseUser.getCurrentUser();
+		if (currentUser != null){
+			Intent startApp = new Intent(this, PictureCapture.class);
+			startActivityForResult(startApp, ACTION_START_APP);
+		}
+		else{
+			setContentView(R.layout.activity_main);
+			
+			Button startBtn = (Button) findViewById(R.id.btnStart);
+			userName = (EditText) findViewById(R.id.userName);
+			passWord = (EditText) findViewById(R.id.passWord);
+			
+			setBtnListenerOrDisable(
+					startBtn,
+					mStartApp
+					);
+			
+		}
 		
 	}
 	

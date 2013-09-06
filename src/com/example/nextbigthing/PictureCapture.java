@@ -255,6 +255,7 @@ public class PictureCapture extends Activity {
 		setContentView(R.layout.picture_capture);
 		
 		mImageView1 = (ImageView) findViewById(R.id.imageView1);
+		mImageView1.setImageResource(R.drawable.this_pic);
 		mImageView1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				dispatchTakePictureIntent(ACTION_TAKE_PHOTO_B_THIS);
@@ -262,6 +263,7 @@ public class PictureCapture extends Activity {
 		});
 		
 		mImageView2 = (ImageView) findViewById(R.id.imageView2);
+		mImageView2.setImageResource(R.drawable.that_pic);
 		mImageView2.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				dispatchTakePictureIntent(ACTION_TAKE_PHOTO_B_THAT);
@@ -275,6 +277,8 @@ public class PictureCapture extends Activity {
 		picBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				dispatchPostPicturesIntent(ACTION_POST_PICTURES);
+				mImageView1.setImageResource(R.drawable.this_pic);
+				mImageView2.setImageResource(R.drawable.that_pic);
 			}
 		});
 		

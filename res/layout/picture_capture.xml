@@ -12,7 +12,6 @@
     	<ImageView
 	        android:layout_height="fill_parent"
 	        android:layout_width="fill_parent" 
-	        android:src="@drawable/this_pic"
 	        android:visibility="visible"
 	        android:id="@+id/imageView1" /> 	
     </LinearLayout>
@@ -25,7 +24,6 @@
     	<ImageView
 	        android:layout_height="fill_parent"
 	        android:layout_width="fill_parent" 
-	        android:src="@drawable/that_pic"
 	        android:visibility="visible"
 	        android:id="@+id/imageView2" /> 	
 	</LinearLayout>

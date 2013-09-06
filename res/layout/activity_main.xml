@@ -4,6 +4,18 @@
     android:layout_height="match_parent" 
     android:layout_width="match_parent"
     >
+    <EditText
+			android:hint="@string/userName" android:id="@+id/userName"
+			android:layout_height="60dp"
+			android:layout_width="fill_parent"
+	/>
+    
+    <EditText
+        	android:hint="@string/passWord" android:id="@+id/passWord"
+        	android:layout_height="60dp"
+        	android:layout_width="fill_parent" 
+    />
+    
     <Button android:text="@string/btnStart" android:id="@+id/btnStart"
     	    android:layout_height="wrap_content"
     	    android:layout_width="wrap_content"
