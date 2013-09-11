@@ -48,13 +48,28 @@ public class MainActivity extends Activity
 			}
 		};
 		
+		Button.OnClickListener mLoadApp = 
+				new Button.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dispatchLoadAppIntent(ACTION_START_APP);
+				}
+			};	
+		
 	private void dispatchStartAppIntent(int actionCode){
 		Intent startApp = new Intent(this, PictureCapture.class);
 		
 		if (actionCode == ACTION_START_APP){
 			startActivityForResult(startApp, actionCode);
-		}
+		}	
+	}
+	
+	private void dispatchLoadAppIntent(int actionCode){
+		Intent startApp = new Intent(this, LoadPicture.class);
 		
+		if (actionCode == ACTION_START_APP){
+			startActivityForResult(startApp, actionCode);
+		}	
 	}
 		
 	@Override
@@ -63,10 +78,16 @@ public class MainActivity extends Activity
 		setContentView(R.layout.activity_main);
 		
 		Button startBtn = (Button) findViewById(R.id.btnStart);
+		Button loadBtn = (Button) findViewById(R.id.btnLoad);
 		
 		setBtnListenerOrDisable(
 				startBtn,
 				mStartApp
+				);
+		
+		setBtnListenerOrDisable(
+				loadBtn,
+				mLoadApp
 				);
 		
 		//Parse stuff

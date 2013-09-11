@@ -5,9 +5,12 @@
     <string name="picture_capture">Capture Picture</string>
     <string name="action_settings">Settings</string>
     <string name="btnStart">Start</string>
+    <string name="btnLoad">LeChoix</string>
+    <string name="btnFuck">ChoixNoir</string>
     <string name="btnIntend">Post</string>
     <string name="album_name">Next Big Thing</string>
     <string name="cannot">Cannot</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_load_picture">LoadPicture</string>
 
 </resources>

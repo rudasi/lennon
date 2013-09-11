@@ -53,12 +53,14 @@ public class PictureCapture extends Activity {
 	private byte[] data_this;
 	private byte[] data_that;
 	
+	
+	
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
 	
 	//Added stuff public
 	public byte[] getBytesFromBitmap(Bitmap bitmap) {
 	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	    bitmap.compress(CompressFormat.JPEG, 70, stream);
+	    bitmap.compress(CompressFormat.JPEG, 70, stream); //70 --> quality of the image can take a number from 0 to 100
 	    return stream.toByteArray();
 	}
 	
@@ -68,12 +70,13 @@ public class PictureCapture extends Activity {
 		file_this.saveInBackground();
 		file_that.saveInBackground();
 		
+		//associate a ParseFile onto a ParseObject
 		ParseObject post_data = new ParseObject("IMG");
 		post_data.put("Title", "doubling");
 		post_data.put("img1", file_this);
 		post_data.put("img2", file_that);
 		post_data.put("imgName1", "Check yourself");
-		post_data.put("imgName2", "Before you reck yourself");
+		post_data.put("imgName2", "Before you wreck yourself");
 		
 		post_data.saveInBackground(new SaveCallback() {
 			public void done(ParseException e){

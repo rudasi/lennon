@@ -35,9 +35,14 @@
             <intent-filter>
                 <action android:name="PICTURE_CAPTURE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nextbigthing.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.nextbigthing.LoadPicture"
+            android:label="@string/title_activity_load_picture" >
         </activity>
     </application>
 
