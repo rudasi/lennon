@@ -1,5 +1,6 @@
 package com.example.nextbigthing;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -14,8 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.FunctionCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -110,6 +113,7 @@ public class MainActivity extends Activity
 		//Parse stuff
 		Parse.initialize(this, "vQm6jpJhvdC7DJavE1aOFcb7ytTBUV1wPden4jmy", "Oj1hVCxed731RsvGMExhbS5TjVWoAL2nR71FpqLZ");
 		ParseAnalytics.trackAppOpened(getIntent());
+		
 		currentUser = ParseUser.getCurrentUser();
 		if (currentUser != null){
 			Intent startApp = new Intent(this, PictureCapture.class);
