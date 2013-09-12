@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
+        
             android:name="com.example.nextbigthing.PictureCapture"
             android:label="@string/picture_capture"
             android:parentActivityName="com.example.nextbigthing.MainActivity" >
@@ -39,7 +39,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nextbigthing.MainActivity" />
-        </activity>
+        
         <activity
             android:name="com.example.nextbigthing.LoadPicture"
             android:label="@string/title_activity_load_picture" >

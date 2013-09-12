@@ -37,7 +37,8 @@ import java.util.*;
 
 public class LoadPicture extends Activity  {
 	  
-	public static int count = 0;
+	private static int count = 0;
+	private static ParseObject obj;
 	// GestureDetector gesturedetector = null;
 	//OnSwipeTouchListener swipe = null;
 	View layout;
@@ -46,11 +47,64 @@ public class LoadPicture extends Activity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_load_picture);
 		
+		ImageView click1 = (ImageView) findViewById(R.id.imageView3);
+		ImageView click2 = (ImageView) findViewById(R.id.imageView4);
+		
+		click1.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Toast.makeText(LoadPicture.this, "click1", Toast.LENGTH_SHORT).show();
+				//ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("IMG");  
+				
+				if (LoadPicture.obj.isDataAvailable()){
+					
+					Log.d("OBJECTNAME onClick1", LoadPicture.obj.getObjectId());
+					String objectId = LoadPicture.obj.getObjectId();
+					HashMap<String, Object> params = new HashMap<String, Object>();
+					params.put("img_uid",objectId);
+					params.put("tot", 1);
+					ParseCloud.callFunctionInBackground("upvote", params, new FunctionCallback<Object>() {
+					   public void done(Object o, ParseException e) {
+					
+					       if (e == null) {
+					    	   Log.d("UPvote", "called");
+					       }
+					       else{
+					    	    Log.d("UpVote", "Not called on the server"); 
+					       }
+					   }
+					});
+				}
+    		   
+			}
+		});
+		
+		click2.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Toast.makeText(LoadPicture.this, "click2", Toast.LENGTH_SHORT).show();
+				if (LoadPicture.obj.isDataAvailable()){
+					
+					Log.d("OBJECTNAME onClick2", LoadPicture.obj.getObjectId());
+					String objectId = LoadPicture.obj.getObjectId();
+					HashMap<String, Object> params = new HashMap<String, Object>();
+					params.put("img_uid",objectId);
+					params.put("tot", 2);
+					ParseCloud.callFunctionInBackground("upvote", params, new FunctionCallback<Object>() {
+					   public void done(Object o, ParseException e) {
+					
+					       if (e == null) {
+					    	   Log.d("UPvote", "Successfully called");
+					       }
+					       else{
+					    	    Log.d("UpVote", "Function Upvote is not getting called on the server"); 
+					       }
+					   }
+					});
+				}
+			}
+		});
 		
 		layout = (GestureOverlayView) findViewById(R.id.gestures_overlay);
-		
 		//swipe = new OnSwipeTouchListener();
-		
 		layout.setOnTouchListener(new OnSwipeTouchListener(){
 //			public void onSwipeTop() {
 //	        Toast.makeText(LoadPicture.this, "top", Toast.LENGTH_SHORT).show();
@@ -105,7 +159,8 @@ public class LoadPicture extends Activity  {
 			    	   try {
 			    		    ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("IMG");  
 			    		    
-			    		    ParseObject obj = (ParseObject) query.get(idList[index]);    
+			    		    LoadPicture.obj = (ParseObject) query.get(idList[index]);
+			 
 							Log.d("OBJECTNAME", obj.getObjectId());
 							//Works Till here 
 
@@ -153,7 +208,7 @@ public class LoadPicture extends Activity  {
 						}
 			       }   
 			       else{
-			    	    Log.d("PictureCapture", "Could not save pASDSicture"); 
+			    	    Log.d("PictureCapture", "Could not save load picture"); 
 			       }
 			   }
 			});

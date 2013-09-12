@@ -10,6 +10,8 @@ package com.example.nextbigthing;
 	public class OnSwipeTouchListener implements OnTouchListener {
 
 	    private final GestureDetector gestureDetector = new GestureDetector(new GestureListener());
+	    
+	  
 
 	    public boolean onTouch(final View view, final MotionEvent motionEvent) {
 	        return gestureDetector.onTouchEvent(motionEvent);
