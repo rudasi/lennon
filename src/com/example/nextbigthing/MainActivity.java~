@@ -1,5 +1,6 @@
 package com.example.nextbigthing;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -14,9 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.LogInCallback;
+import com.parse.FunctionCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -24,7 +26,6 @@ import com.parse.SignUpCallback;
 public class MainActivity extends Activity
 {
 	private static final int ACTION_START_APP = 1;
-	private static final int ACTION_TAKE_PICTURE = 2;
 	private EditText userName;
 	private EditText passWord;
 	private ParseUser currentUser;
@@ -54,17 +55,18 @@ public class MainActivity extends Activity
 			}
 		};
 		
-	Button.OnClickListener mLoadApp = 
-			new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dispatchLoadAppIntent(ACTION_START_APP);
-			}
-		};	
+		Button.OnClickListener mLoadApp = 
+				new Button.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dispatchLoadAppIntent(ACTION_START_APP);
+				}
+			};	
 		
 	private void dispatchStartAppIntent(int actionCode){
 		
 		if (actionCode == ACTION_START_APP){
+<<<<<<< HEAD
 			//startActivityForResult(startApp, actionCode);
 			if ((userName.getText().toString().equals("User Name")) || (userName.getText().toString().equals(""))){
 				Log.d("Main Activity", "No User Name entered");
@@ -85,53 +87,39 @@ public class MainActivity extends Activity
 			else{
 				passWordSet = 1;
 			}
-
+			
 			if (userNameSet == 1 && passWordSet == 1){
-				
-				ParseUser.logInInBackground(userName.getText().toString(), passWord.getText().toString(), new LogInCallback() {
-					public void done(ParseUser user, ParseException d){
-						if (user != null){
-							Log.d("MainActivity", "Old user logged in");
-							currentUser = ParseUser.getCurrentUser();
-							if (currentUser != null){
-								Log.d("Main Activity", "Starting load picture");
-								Intent startApp = new Intent(MainActivity.this, LoadPicture.class);
-								startActivityForResult(startApp, ACTION_START_APP);
-							}
+				ParseUser user = new ParseUser();
+				user.setUsername(userName.getText().toString());
+				user.setPassword(passWord.getText().toString());
+				user.signUpInBackground(new SignUpCallback() {
+					public void done(ParseException e) {
+						if (e == null){
+							Log.d("Main Activity", "New user created");
+							Toast.makeText(getApplicationContext(), "Successful Sign up", Toast.LENGTH_LONG).show();
 						}
 						else{
-							ParseUser newUser = new ParseUser();
-							newUser.setUsername(userName.getText().toString());
-							newUser.setPassword(passWord.getText().toString());
-							newUser.signUpInBackground(new SignUpCallback() {
-								public void done(ParseException e) {
-									if (e == null){
-										Log.d("Main Activity", "New user created");
-										Toast.makeText(getApplicationContext(), "Successful Sign up", Toast.LENGTH_LONG).show();
-										currentUser = ParseUser.getCurrentUser();
-										if (currentUser != null){
-											Log.d("Main Activity", "Starting load picture");
-											Intent startApp = new Intent(MainActivity.this, LoadPicture.class);
-											startActivityForResult(startApp, ACTION_START_APP);
-										}
-									}
-									else{
-										Log.d("Main Activity", "New user NOT created");
-										Toast.makeText(getApplicationContext(), "Unsuccessful Sign up, please try again", Toast.LENGTH_LONG).show();
-									}
-								}
-							});
+							Log.d("Main Activity", "New user NOT created");
+							Toast.makeText(getApplicationContext(), "Unsuccessful Sign up, please try again", Toast.LENGTH_LONG).show();
 						}
-					}	
+					}
 				});
 			}
 			
-			
+			currentUser = ParseUser.getCurrentUser();
+			if (currentUser != null){
+				Intent startApp = new Intent(this, PictureCapture.class);
+				startActivityForResult(startApp, ACTION_START_APP);
+			}
+		}
+=======
+			startActivityForResult(startApp, actionCode);
 		}	
 	}
 	
 	private void dispatchLoadAppIntent(int actionCode){
 		Intent startApp = new Intent(this, LoadPicture.class);
+>>>>>>> d2c48159408c214f9159230c2858ceae91548be7
 		
 		if (actionCode == ACTION_START_APP){
 			startActivityForResult(startApp, actionCode);
@@ -141,37 +129,32 @@ public class MainActivity extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_main);
+<<<<<<< HEAD
+=======
+		setContentView(R.layout.activity_main);
 		
-		//Button startBtn = (Button) findViewById(R.id.btnStart);
-		//Button loadBtn = (Button) findViewById(R.id.btnLoad);
-		/*
+		Button startBtn = (Button) findViewById(R.id.btnStart);
+		Button loadBtn = (Button) findViewById(R.id.btnLoad);
+		
 		setBtnListenerOrDisable(
 				startBtn,
 				mStartApp
 				);
-		*/
-		/*
+>>>>>>> d2c48159408c214f9159230c2858ceae91548be7
+		
 		setBtnListenerOrDisable(
 				loadBtn,
 				mLoadApp
 				);
-		*/
+		
 		//Parse stuff
 		Parse.initialize(this, "vQm6jpJhvdC7DJavE1aOFcb7ytTBUV1wPden4jmy", "Oj1hVCxed731RsvGMExhbS5TjVWoAL2nR71FpqLZ");
 		ParseAnalytics.trackAppOpened(getIntent());
 		
 		currentUser = ParseUser.getCurrentUser();
-
-		if (currentUser != null){	
-			/*
-			Intent take_picture = new Intent(this, PictureCapture.class);
-			startActivityForResult(take_picture, ACTION_TAKE_PICTURE);
-			*/
-			
-			Intent load_picture = new Intent(this, LoadPicture.class);
-			startActivityForResult(load_picture, ACTION_START_APP);
-			 
+		if (currentUser != null){
+			Intent startApp = new Intent(this, PictureCapture.class);
+			startActivityForResult(startApp, ACTION_START_APP);
 		}
 		else{
 			setContentView(R.layout.activity_main);
@@ -179,8 +162,6 @@ public class MainActivity extends Activity
 			Button startBtn = (Button) findViewById(R.id.btnStart);
 			userName = (EditText) findViewById(R.id.userName);
 			passWord = (EditText) findViewById(R.id.passWord);
-			userNameSet = 0;
-			passWordSet = 0;
 			
 			setBtnListenerOrDisable(
 					startBtn,

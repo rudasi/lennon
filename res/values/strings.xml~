@@ -4,14 +4,16 @@
     <string name="app_name">Next Big Thing</string>
     <string name="picture_capture">Capture Picture</string>
     <string name="action_settings">Settings</string>
+<<<<<<< HEAD
     <string name="btnStart">Sign Up/Login</string>
-    <string name="btnLogout">Logout</string>
     <string name="userName">User Name</string>
     <string name="passWord">Password</string>
+=======
+    <string name="btnStart">Start</string>
     <string name="btnLoad">LeChoix</string>
     <string name="btnFuck">ChoixNoir</string>
-    <string name="btnPost">Post</string>
-    <string name="btnNewPost">New Post</string>
+>>>>>>> d2c48159408c214f9159230c2858ceae91548be7
+    <string name="btnIntend">Post</string>
     <string name="album_name">Next Big Thing</string>
     <string name="cannot">Cannot</string>
     <string name="hello_world">Hello world!</string>

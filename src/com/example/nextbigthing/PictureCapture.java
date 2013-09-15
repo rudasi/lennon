@@ -5,10 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -34,6 +31,7 @@ import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 
@@ -42,6 +40,7 @@ public class PictureCapture extends Activity {
     private static final int ACTION_TAKE_PHOTO_B_THIS = 1;
     private static final int ACTION_TAKE_PHOTO_B_THAT = 2;
     private static final int ACTION_POST_PICTURES = 3;
+    private static final int ACTION_LOGOUT_APP = 4;
 	private static final String BITMAP_STORAGE_KEY1 = "viewbitmap1";
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY1 = "imageviewvisibility1";
 	private static final String BITMAP_STORAGE_KEY2 = "viewbitmap2";
@@ -58,27 +57,30 @@ public class PictureCapture extends Activity {
 	private byte[] data_this;
 	private byte[] data_that;
 	
+	
+	
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
 	
 	//Added stuff public
 	public byte[] getBytesFromBitmap(Bitmap bitmap) {
 	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	    bitmap.compress(CompressFormat.JPEG, 70, stream);
+	    bitmap.compress(CompressFormat.JPEG, 70, stream); //70 --> quality of the image can take a number from 0 to 100
 	    return stream.toByteArray();
 	}
 	
 	public void sendPicToParse(){
-		ParseFile file_this = new ParseFile("westpunjab1.bmp", data_this);		
-		ParseFile file_that = new ParseFile("westpunjab2.bmp", data_that);
+		ParseFile file_this = new ParseFile("this.bmp", data_this);		
+		ParseFile file_that = new ParseFile("that.bmp", data_that);
 		file_this.saveInBackground();
 		file_that.saveInBackground();
 		
+		//associate a ParseFile onto a ParseObject
 		ParseObject post_data = new ParseObject("IMG");
 		post_data.put("Title", "doubling");
 		post_data.put("img1", file_this);
 		post_data.put("img2", file_that);
 		post_data.put("imgName1", "Check yourself");
-		post_data.put("imgName2", "Before you reck yourself");
+		post_data.put("imgName2", "Before you wreck yourself");
 		
 		post_data.saveInBackground(new SaveCallback() {
 			public void done(ParseException e){
@@ -246,6 +248,14 @@ public class PictureCapture extends Activity {
 		//startActivityForResult(takePictureIntent, actionCode);
 	}
 	
+	private void dispatchLogoutIntent(int actionCode){
+		if (actionCode == ACTION_LOGOUT_APP){
+			ParseUser.logOut();
+			Intent MainScreen = new Intent(this, MainActivity.class);
+			startActivityForResult(MainScreen, ACTION_LOGOUT_APP);
+		}
+	}
+	
 	private void handleBigCameraPhoto(int picture){
 		if (mCurrentPhotoPath != null){		
 			setPic(picture);
@@ -278,12 +288,19 @@ public class PictureCapture extends Activity {
 		mImageBitmap1 = null;
 		mImageBitmap2 = null;
 		
-		Button picBtn = (Button) findViewById(R.id.btnIntend);
+		Button picBtn = (Button) findViewById(R.id.btnPost);
 		picBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				dispatchPostPicturesIntent(ACTION_POST_PICTURES);
 				mImageView1.setImageResource(R.drawable.this_pic);
 				mImageView2.setImageResource(R.drawable.that_pic);
+			}
+		});
+		
+		Button logoutBtn = (Button) findViewById(R.id.btnLogout);
+		logoutBtn.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v) {
+				dispatchLogoutIntent(ACTION_LOGOUT_APP);
 			}
 		});
 		

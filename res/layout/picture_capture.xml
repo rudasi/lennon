@@ -1,43 +1,43 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent" android:orientation="vertical" >   
+   
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-	<LinearLayout 
-	 	android:orientation="horizontal"
-	 	android:layout_height="wrap_content"
-	 	android:layout_width="match_parent"
-	>
     	<ImageView
-	        android:layout_height="fill_parent"
+	        android:layout_height="250dp"
 	        android:layout_width="fill_parent" 
 	        android:visibility="visible"
 	        android:id="@+id/imageView1" /> 	
-    </LinearLayout>
-
-	<LinearLayout
-	    android:orientation="horizontal"
-	 	android:layout_height="wrap_content"
-	 	android:layout_width="match_parent"
-	>
+			
     	<ImageView
-	        android:layout_height="fill_parent"
+	        android:layout_height="250dp"
 	        android:layout_width="fill_parent" 
 	        android:visibility="visible"
 	        android:id="@+id/imageView2" /> 	
-	</LinearLayout>
 	
 	<LinearLayout
 	    android:orientation="horizontal"
 	 	android:layout_height="wrap_content"
 	 	android:layout_width="match_parent"
 	>
-		<Button android:text="@string/btnIntend" android:id="@+id/btnIntend"
+		<Button android:text="@string/btnPost" android:id="@+id/btnPost"
 	    	    android:layout_height="wrap_content"
 	    	    android:layout_width="0dp"
 	    	    android:layout_weight="1" 
 	    	/>
+		
+		<Button android:text="@string/btnLogout" android:id="@+id/btnLogout"
+	    	    android:layout_height="wrap_content"
+	    	    android:layout_width="0dp"
+	    	    android:layout_weight="1" 
+	    	/>
+		
 	</LinearLayout>
 	
 </LinearLayout>
+</ScrollView>
